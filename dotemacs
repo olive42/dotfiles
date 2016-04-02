@@ -9,10 +9,6 @@
 ;; (setq load-path (cons "~/.emacs.d/org-7.4/lisp" load-path))
 ;(add-to-list 'load-path "~/.emacs.d/emacs-nav-20090824b")
 
-; ibuffer
-(require 'ibuffer)
-(global-set-key "\C-x\C-b" 'ibuffer)
-
 ;; Syntax Highlight
 ;; (require 'font-lock)
 ;; (global-font-lock-mode t)
@@ -30,6 +26,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(add-log-mailing-address "olivier@tharan.org")
+ '(battery-update-interval 300)
  '(blink-cursor-mode nil)
  '(browse-url-browser-function (quote browse-url-generic))
  '(browse-url-generic-args (quote ("--incognito" "--user-data-dir=/tmp")))
@@ -38,21 +35,32 @@
  '(column-number-mode t)
  '(desktop-dirname "~/.emacs.d" t)
  '(display-time-24hr-format t)
+ '(exec-path (quote ("/usr/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin")))
  '(history-length 250)
  '(indicate-empty-lines t)
+ '(inhibit-startup-screen t)
+ '(initial-scratch-message nil)
  '(make-backup-files nil)
+ '(menu-bar-mode nil)
  '(next-line-add-newlines nil)
  '(py-indent-offset 2 t)
+ '(rcirc-authinfo (quote (("freenode" nickserv "oth" "insert-password-here"))))
  '(rcirc-buffer-maximum-lines 10000)
+ '(rcirc-default-full-name "olive")
+ '(rcirc-default-user-name "olive")
+ '(rcirc-server-alist (quote (("irc.freenode.net" :nick "oth" :port 6697 :channels ("##computer" "##computer-enthusiasm") :encryption tls))))
  '(require-final-newline t)
  '(safe-local-variable-values (quote ((graphviz-dot-indent-width . 2))))
  '(sentence-end-double-space nil)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil)
  '(visible-bell t))
 
-; Turn off toolbar & menu bar; display time in modeline
-(tool-bar-mode 0)
-(menu-bar-mode 0)
+; display time in modeline
 (display-time-mode 1)
+
+; ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ; keybindings
 ; == C-x 1 (display only one window)
