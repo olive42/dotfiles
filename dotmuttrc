@@ -1,0 +1,46 @@
+# https://pbrisbin.com/posts/mutt_gmail_offlineimap/
+
+set mbox_type = Maildir
+set folder = ~/Maildir
+set spoolfile = "+INBOX"
+# set mbox = "+[Gmail]/All Mail"
+set postponed = "+[Gmail]/Drafts"
+unset record
+
+mailboxes +INBOX
+
+macro index D "<save-message>+[Gmail]/Trash<enter>" "move message to the trash"
+macro index S "<save-message>+[Gmail]/Spam<enter>" "mark message as spam"
+
+set realname = "Fill Me Please"
+set from = "fill.me@please"
+set mail_check = 0
+set envelope_from
+
+unset move
+set delete
+unset confirmappend
+set quit
+unset mark_old
+
+set sort = threads
+set sort_aux = reverse-last-date-received
+set sort_re
+
+set pager_index_lines = 8
+set pager_context = 5
+set pager_stop
+set menu_scroll
+set smart_wrap
+set tilde
+unset markers
+
+set fcc_attach
+unset mime_forward
+set forward_format = "Fwd: %s"
+set include
+set forward_quote
+
+ignore *
+unignore from: to: cc: date: subject:
+hdr_order from: to: cc: date: subject:
