@@ -16,6 +16,7 @@ chatnets = {
   Freenode = {
     type = "IRC";
     nick = "oth";
+    # Obviously change the password to match the actual Nickserv one.
     autosendcmd = "/^msg nickserv identify XXX; wait 2000";
     max_kicks = "1";
     max_msgs = "4";
