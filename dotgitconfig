@@ -1,0 +1,5 @@
+[user]
+	name = Olivier Tharan
+	email = olivier@tharan.org
+[core]
+	editor = emacs
