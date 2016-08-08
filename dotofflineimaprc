@@ -19,6 +19,14 @@ realdelete = no
 
 folderfilter = lambda foldername: foldername not in ['[Gmail]/Spam', '[Gmail]/All Mail', '[Gmail]/Starred', '[Gmail]/Important']
 
-holdconnectionopen = true
-keepalive = 60
+holdconnectionopen = true keepalive = 60
+
+# On MacOS, the Keychain holds the cert bundle, but you can use the
+# one from `brew install openssl`
+# https://stackoverflow.com/questions/24675167/ca-certificates-mac-os-x
+
+# Linux
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# MacOS
+# sslcacertfile = /usr/local/etc/openssl/cert.pem

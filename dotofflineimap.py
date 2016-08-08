@@ -7,4 +7,3 @@ def get_password_emacs(machine, login, port):
     p = re.compile(s)
     authinfo = os.popen("gpg -q -d ~/.authinfo.gpg").read()
     return p.search(authinfo).group(1)
-
