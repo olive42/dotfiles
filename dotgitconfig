@@ -3,3 +3,4 @@
 	email = olivier@tharan.org
 [core]
 	editor = emacs
+	pager = less -FRSX
