@@ -25,14 +25,8 @@ setopt \
 
 # end of options
 
-# I am proud of this prompt
-#setopt prompt_subst
-# vanity hostname used to be a thing to get around some crazy naming scheme with Ganeti. This is not so useful now.
-[[ -f /etc/vanity-hostname ]] && vanity_hostname=" [%B$(< /etc/vanity-hostname | sed 's/.corp.google.com//')%b]"
-PS1="%n@%2m$vanity_hostname: %d%(?..(%?%))
-: %D{%Y:%m:%d} %T %#; "
-
-path+=(~/bin)
+path+=(/usr/local/bin ~/bin /usr/local/go/bin)
+fpath+=(~/.zfunctions)
 
 bindkey -e
 bindkey ' ' magic-space
@@ -59,9 +53,32 @@ export LC_ALL="en_US.UTF-8"
 
 export ANSIBLE_INVENTORY=~/ansible-conf/ansible-hosts
 
+if [ -n "$INSIDE_EMACS" ]; then
+    export ZSH_THEME="rawsyntax"
+else
+    export ZSH_THEME="robbyrussell"
+fi
+
+export GOPATH=/Users/olive/go
+
+export BYOBU_PREFIX=$(brew --prefix)
+
+# from brew install groovy
+export GROOVY_HOME=/usr/local/opt/groovy/libexec
+
+# See https://gist.github.com/christopheranderton/8644743 for how to
+# create a Github token for Homebrew. This is sometimes necessary to
+# avoid being throttled by GH
+# Personal tokens are here: https://github.com/settings/tokens
+export HOMEBREW_GITHUB_API_TOKEN=""
+eval "$(rbenv init -)"
+
 autoload -U compinit
 compinit
 
 umask 022
+
+autoload -U promptinit && promptinit
+prompt pure
 
 # end of .zshrc
