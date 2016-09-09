@@ -13,7 +13,19 @@
 ;; (require 'font-lock)
 ;; (global-font-lock-mode t)
 
-; manage filling paragraphs
+;; Package management
+(require 'package)
+(setq
+ package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+		    ("org" . "http://orgmode.org/elpa/")
+		    ("melpa" . "https://melpa.org/packages/")
+		    ("melpa-stable" . "https://stable.melpa.org/packages/")))
+(package-initialize)
+(when (not
+       package-archive-contents)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 (add-hook 'text-mode-hook
           '(lambda () (auto-fill-mode t) ))
 (add-hook 'text-mode-hook
@@ -33,6 +45,7 @@
  '(browse-url-generic-program "google-chrome")
  '(case-fold-search t)
  '(column-number-mode t)
+ '(create-lockfiles nil)
  '(desktop-dirname "~/.emacs.d" t)
  '(display-time-24hr-format t)
  '(exec-path (quote ("/usr/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin")))
@@ -40,6 +53,7 @@
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
+ '(global-hl-line-mode t)
  '(make-backup-files nil)
  '(menu-bar-mode nil)
  '(next-line-add-newlines nil)
@@ -51,9 +65,12 @@
  '(rcirc-server-alist (quote (("irc.freenode.net" :nick "oth" :port 6697 :channels ("##computer" "##computer-enthusiasm") :encryption tls))))
  '(require-final-newline t)
  '(safe-local-variable-values (quote ((graphviz-dot-indent-width . 2))))
+ '(scroll-error-top-bottom t)
  '(sentence-end-double-space nil)
+ '(show-paren-delay 0.5)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
+ '(use-package-always-ensure t)
  '(visible-bell t))
 
 ; display time in modeline
@@ -93,7 +110,7 @@
 
 ; http://emacs-fu.blogspot.com/2008/12/showing-line-numbers.html
 (require 'linum)
-;(global-linum-mode t)
+(global-linum-mode t)
 (global-set-key (kbd "<f6>") 'linum-mode)
 
 ; http://nflath.com/2009/07/more-random-emacs-config/
@@ -206,6 +223,20 @@ that uses 'font-lock-warning-face'."
             ;; Set dired-x buffer-local variables here.  For example:
             ;; (dired-omit-mode 1)
             ))
+
+;; HELM
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-m") 'helm-M-x)
+(global-set-key (kbd "C-c C-m") 'helm-M-x)
+(global-set-key (kbd "C-x b") 'helm-mini)
+
+;; ENSIME for Scala
+(setq exec-path (append exec-path '("/usr/local/bin")))
+(setq exec-path (append exec-path '("/usr/local/sbin")))
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(use-package ensime
+	     :pin melpa-stable)
+;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
 ;; (require 'whitespace)
 ;; (setq whitespace-line-column 80)
