@@ -9,7 +9,7 @@ done
 # Copy files
 ISDF=~/.initial-setup-done
 if [ ! -f $ISDF ]; then
-    for f in .emacs.d/* .gitconfig .i3/config .i3status.conf .zfunctions/* .zshrc ; do
+    for f in .emacs.d/* .gitconfig .i3/config .i3status.conf .irssi/config .zfunctions/* .zshrc ; do
 	cp $f ~/$(dirname $f)
     done
     touch $ISDF
