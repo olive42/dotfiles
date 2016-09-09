@@ -28,6 +28,12 @@
 (require 'use-package)
 
 (use-package magit :ensure t)
+(use-package helm
+  :ensure t
+  :bind (("M-x" . helm-M-x)
+	 ("C-x C-m" . helm-M-x)
+	 ("C-c C-m" . helm-M-x)
+	 ("C-x b" . helm-mini)))
 
 (add-hook 'text-mode-hook
           '(lambda () (auto-fill-mode t) ))
@@ -44,7 +50,7 @@
 (setq case-fold-search t)
 (setq column-number-mode t)
 (setq create-lockfiles nil)
-(setq desktop-dirname "~/.emacs.d" t)
+(setq desktop-dirname "~/.emacs.d")
 (setq display-time-24hr-format t)
 (setq history-length 250)
 (setq indicate-empty-lines t)
@@ -54,7 +60,7 @@
 (setq menu-bar-mode nil)
 (setq next-line-add-newlines nil)
 (setq package-selected-packages (quote (use-package magit helm ensime scala-mode)))
-(setq py-indent-offset 2 t)
+(setq py-indent-offset 2)
 (setq rcirc-authinfo
       (quote
        (("freenode" nickserv "oth" "insert-password-here"))))
@@ -226,12 +232,6 @@ that uses 'font-lock-warning-face'."
             ;; Set dired-x buffer-local variables here.  For example:
             ;; (dired-omit-mode 1)
             ))
-
-;; HELM
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-m") 'helm-M-x)
-(global-set-key (kbd "C-c C-m") 'helm-M-x)
-(global-set-key (kbd "C-x b") 'helm-mini)
 
 ;; ENSIME for Scala
 (setq exec-path (append exec-path '("/usr/local/bin")))
