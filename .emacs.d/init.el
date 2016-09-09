@@ -147,13 +147,13 @@ that uses 'font-lock-warning-face'."
 (setq initial-frame-alist '(
                             (menu-bar-lines . 0)
                             (tool-bar-lines . 0)
-                            (font . "Inconsolata-11")
+                            (font . "Inconsolata-10")
                             (height . 77) (width . 108)
                             ))
 (setq default-frame-alist '(
                             (menu-bar-lines . 0)
                             (tool-bar-lines . 0)
-                            (font . "Inconsolata-11")
+                            (font . "Inconsolata-10")
                             (height . 77) (width . 108)
                             (vertical-scroll-bars . nil)
                                                  ))
