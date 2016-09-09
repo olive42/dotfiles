@@ -25,53 +25,56 @@
        package-archive-contents)
   (package-refresh-contents)
   (package-install 'use-package))
+(require 'use-package)
+
+(use-package magit :ensure t)
 
 (add-hook 'text-mode-hook
           '(lambda () (auto-fill-mode t) ))
 (add-hook 'text-mode-hook
           '(lambda () (setq fill-column 78)))
 
-; variables
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(add-log-mailing-address "olivier@tharan.org")
- '(battery-update-interval 300)
- '(blink-cursor-mode nil)
- '(browse-url-browser-function (quote browse-url-generic))
- '(browse-url-generic-args (quote ("--incognito" "--user-data-dir=/tmp")))
- '(browse-url-generic-program "google-chrome")
- '(case-fold-search t)
- '(column-number-mode t)
- '(create-lockfiles nil)
- '(desktop-dirname "~/.emacs.d" t)
- '(display-time-24hr-format t)
- '(exec-path (quote ("/usr/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin")))
- '(history-length 250)
- '(indicate-empty-lines t)
- '(inhibit-startup-screen t)
- '(initial-scratch-message nil)
- '(global-hl-line-mode t)
- '(make-backup-files nil)
- '(menu-bar-mode nil)
- '(next-line-add-newlines nil)
- '(py-indent-offset 2 t)
- '(rcirc-authinfo (quote (("freenode" nickserv "oth" "insert-password-here"))))
- '(rcirc-buffer-maximum-lines 10000)
- '(rcirc-default-full-name "olive")
- '(rcirc-default-user-name "olive")
- '(rcirc-server-alist (quote (("irc.freenode.net" :nick "oth" :port 6697 :channels ("##computer" "##computer-enthusiasm") :encryption tls))))
- '(require-final-newline t)
- '(safe-local-variable-values (quote ((graphviz-dot-indent-width . 2))))
- '(scroll-error-top-bottom t)
- '(sentence-end-double-space nil)
- '(show-paren-delay 0.5)
- '(show-paren-mode t)
- '(tool-bar-mode nil)
- '(use-package-always-ensure t)
- '(visible-bell t))
+;; variables
+(setq add-log-mailing-address "olivier@tharan.org")
+(setq battery-update-interval 300)
+(setq blink-cursor-mode nil)
+(setq browse-url-browser-function (quote browse-url-generic))
+(setq browse-url-generic-args (quote ("--incognito" "--user-data-dir=/tmp")))
+(setq browse-url-generic-program "google-chrome")
+(setq case-fold-search t)
+(setq column-number-mode t)
+(setq create-lockfiles nil)
+(setq desktop-dirname "~/.emacs.d" t)
+(setq display-time-24hr-format t)
+(setq history-length 250)
+(setq indicate-empty-lines t)
+(setq inhibit-startup-screen t)
+(setq initial-scratch-message nil)
+(setq make-backup-files nil)
+(setq menu-bar-mode nil)
+(setq next-line-add-newlines nil)
+(setq package-selected-packages (quote (use-package magit helm ensime scala-mode)))
+(setq py-indent-offset 2 t)
+(setq rcirc-authinfo
+      (quote
+       (("freenode" nickserv "oth" "insert-password-here"))))
+(setq rcirc-buffer-maximum-lines 10000)
+(setq rcirc-default-full-name "olive")
+(setq rcirc-default-user-name "olive")
+(setq rcirc-server-alist
+      (quote
+       (("irc.freenode.net" :nick "oth" :port 6697 :channels
+	 ("##computer" "##computer-enthusiasm")
+	 :encryption tls))))
+(setq require-final-newline t)
+(setq safe-local-variable-values (quote ((graphviz-dot-indent-width . 2))))
+(setq scroll-error-top-bottom t)
+(setq sentence-end-double-space nil)
+(setq show-paren-delay 0.5)
+(setq show-paren-mode t)
+(setq tool-bar-mode nil)
+(setq use-package-always-ensure t)
+(setq visible-bell t)
 
 ; display time in modeline
 (display-time-mode 1)
