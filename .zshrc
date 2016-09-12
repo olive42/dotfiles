@@ -50,6 +50,8 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
+# See man gpg-agent(1)
+export GPG_TTY=$(tty)
 
 export ANSIBLE_INVENTORY=~/ansible-conf/ansible-hosts
 
