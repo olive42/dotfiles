@@ -96,6 +96,7 @@
 ; == C-x 3
 (global-set-key [f3] 'split-window-horizontally)
 ; == C-x o
+(global-set-key [(control tab)] 'other-window)
 (global-set-key [f4] 'other-window)
 ; join this and next line
 (global-set-key [f8] (lambda() (interactive) (join-line 1)))
@@ -106,11 +107,11 @@
   (split-window-horizontally)
   (split-window-horizontally)
   (balance-windows))
-(global-set-key [f5] 'oth-split-and-balance)
+;(global-set-key [f5] 'oth-split-and-balance)
 (global-set-key [f7] 'delete-other-windows-vertically)
 
 (global-set-key [(control x) (v) (b)] 'magit-status)
-;; (global-unset-key (kbd "C-x g"))
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ; confirm leaving Emacs (why would you want to, right?)
 (setq kill-emacs-query-functions
@@ -195,8 +196,6 @@ that uses 'font-lock-warning-face'."
             ))
 
 ; TODO(olive): do something with it
-;; (require 'magit)
-
 ;; https://chrome.google.com/webstore/detail/ljobjlafonikaiipfkggjbhkghgicgoh
 ;; (require 'edit-server)
 ;; (edit-server-start)
@@ -241,10 +240,10 @@ that uses 'font-lock-warning-face'."
 	     :pin melpa-stable)
 ;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
-;; (require 'whitespace)
-;; (setq whitespace-line-column 80)
-;; (setq whitespace-style '(face-lines-tail))
-;; (add-hook 'prog-mode-hook 'whitespace-mode)
+(require 'whitespace)
+(setq whitespace-line-column 80)
+(setq whitespace-style '(face-lines-tail))
+(add-hook 'prog-mode-hook 'whitespace-mode)
 ;;
 ;; DEPRECATED but kept for sentimental or documentation reasons
 ;;
@@ -277,9 +276,6 @@ that uses 'font-lock-warning-face'."
 ;                      (holiday-fixed 7 14 "National Day")
 ;                      (holiday-fixed 11 11 "World War One Armistice")
 ;                      (holiday-fixed 7 14 "Bastille Day")))
-
-; VC (fichiers gérés avec CVS)
-;; (setq vc-cvs-diff-switches '"-u")
 
 ;; Put autosave files (ie #foo#) in one place, *not* scattered all over the
 ;; file system! (The make-autosave-file-name function is invoked to determine
