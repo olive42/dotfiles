@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 # Make sure some directories exist
-for d in ~/.zsh.d ~/.emacs.d/lisp ~/.zfunctions ~/.i3 ; do
+for d in ~/.zsh.d ~/.emacs.d/lisp ~/.zfunctions ~/.i3 .config/dunst .config/terminator ; do
     mkdir -p $d
 done
 
@@ -9,7 +9,7 @@ done
 # Copy files
 ISDF=~/.initial-setup-done
 if [ ! -f $ISDF ]; then
-    for f in .emacs.d/* .gitconfig .i3/config .i3status.conf .irssi/config .zfunctions/* .zshrc ; do
+    for f in .emacs.d/* .config/dunst/config .config/terminator/config .gitconfig .i3/config .i3status.conf .irssi/config .zfunctions/* .zshrc ; do
 	cp $f ~/$(dirname $f)
     done
     touch $ISDF

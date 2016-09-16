@@ -1,0 +1,96 @@
+[global_config]
+  enabled_plugins = ,
+  title_font = Inconsolata Medium 10
+  title_use_system_font = False
+[keybindings]
+  edit_window_title = None
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+  [[startup]]
+    [[[child0]]]
+      fullscreen = False
+      last_active_term = 0cda8b80-adc4-4e0b-becc-c88932037861
+      last_active_window = True
+      maximised = False
+      order = 0
+      parent = ""
+      position = 0:0
+      size = 960, 1080
+      title = terminator-startup
+      type = Window
+    [[[child1]]]
+      order = 0
+      parent = child0
+      position = 476
+      ratio = 0.4984375
+      type = HPaned
+    [[[child2]]]
+      order = 0
+      parent = child1
+      position = 536
+      ratio = 0.498611111111
+      type = VPaned
+    [[[child5]]]
+      order = 1
+      parent = child1
+      position = 536
+      ratio = 0.498611111111
+      type = VPaned
+    [[[terminal3]]]
+      order = 0
+      parent = child2
+      profile = default
+      type = Terminal
+      uuid = 1c6d134c-87df-43af-9eff-e86f2f4ba77a
+    [[[terminal4]]]
+      order = 1
+      parent = child2
+      profile = default
+      type = Terminal
+      uuid = 41d8d297-e206-42e3-846f-27033849543c
+    [[[terminal6]]]
+      order = 0
+      parent = child5
+      profile = default
+      type = Terminal
+      uuid = 0cda8b80-adc4-4e0b-becc-c88932037861
+    [[[terminal7]]]
+      order = 1
+      parent = child5
+      profile = default
+      type = Terminal
+      uuid = 6a6006ee-8484-4749-b513-73a21f27680b
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#fdf6e3"
+    background_image = None
+    copy_on_selection = True
+    font = Inconsolata Medium 10
+    foreground_color = "#657b83"
+    login_shell = True
+    scroll_on_output = False
+    scrollback_infinite = True
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_system_font = False
+  [[mutt]]
+    background_color = "#300a24"
+    background_image = None
+    copy_on_selection = True
+    custom_command = mutt
+    exit_action = hold
+    font = DejaVu Sans Mono 10
+    foreground_color = "#ffffff"
+    icon_bell = False
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_custom_command = True
+    use_system_font = False
