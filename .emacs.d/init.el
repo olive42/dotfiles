@@ -112,6 +112,7 @@
 
 (global-set-key [(control x) (v) (b)] 'magit-status)
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-magit-file-mode t)
 
 ; confirm leaving Emacs (why would you want to, right?)
 (setq kill-emacs-query-functions
