@@ -303,9 +303,33 @@ that uses 'font-lock-warning-face'."
 ;; (ido-everywhere t)
 ;; (setq ido-max-prospects 0)
 
-;; mu4e - http://www.djcbsoftware.nl/code/mu/mu4e.html
-;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+(add-hook 'rcirc-mode-hook 
+	  (lambda ()
+	    (set-input-method "french-postfix")))
+
+;; (add-hook 'before-save-hook
+;; 	  'gofmt-before-save)
+
+;(setq sml/theme 'light)
+;(require 'smart-mode-line)
+;(sml/setup)
+
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;; Replace "sbcl" with the path to your implementation
+;; (setq inferior-lisp-program "~/ccl/dx86cl64")
+(setq slime-lisp-implementations '((clozure ("~/ccl/dx86cl64") :coding-system utf-8-unix)
+				   (sbcl ("/usr/local/bin/sbcl"))))
+
+;; http://www.emacswiki.org/emacs/Edit_with_Emacs
+;; (require 'edit-server)
+;; (edit-server-start)
+
+;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 ;; (require 'mu4e)
+;; (setq mu4e-mu-binary "/usr/local/bin/mu"
+;;       mu4e-get-mail-command "offlineimap"
+;;       mu4e-update-interval 300
+;; 
 ;; (setq mu4e-drafts-folder "/[Gmail].Drafts"
 ;;       mu4e-sent-folder   "/[Gmail].Sent Mail"
 ;;       mu4e-trash-folder  "/[Gmail].Trash"
