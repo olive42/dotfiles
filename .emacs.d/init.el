@@ -186,6 +186,10 @@ that uses 'font-lock-warning-face'."
 ;; (global-whitespace-mode t)
 
 ; http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/
+(use-package multi-term
+  :ensure t)
+(use-package helm-mt
+  :ensure t)
 (setq multi-term-program "/bin/zsh")
 (add-hook 'term-mode-hook
           (lambda ()
