@@ -150,10 +150,14 @@ bindsym $mod+r mode "resize"
 
 # Custom keybindings
 bindsym $mod+Ctrl+l exec i3lock -c 000000 -e -f
+bindsym $mod+Ctrl+m exec terminator -T mutt -p mutt -c mutt -x mutt
+bindsym $mod+Ctrl+a exec terminator -T cabernet -c cabernet -x ssh cabernet
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+        mode hide
+	modifier $mod
         status_command i3status
 }
 
@@ -168,11 +172,17 @@ workspace 3 output DP-1
 workspace 5 output DP-1
 workspace 7 output DP-1
 
+assign [class="^terminator-startup$"] 1
+assign [class="^Google-chrome$"] 2
+assign [title="^emacs@le-tiret-du-6$"] 3
+assign [class="^Firefox$"] 4
+
+for_window [class="^Google-chrome$"] border none
+for_window [class="^Firefox$"] border none
+
 # Startup
-exec --no-startup-id xsetroot -bg black
+exec ~/.i3/autostart
+
 # exec_always --no-startup-id setxkbmap -layout us -option 'compose:rwin' -option 'ctrl:nocaps' # Code
 exec_always --no-startup-id setxkbmap -layout us -option 'compose:ralt' -option 'ctrl:nocaps'
 exec_always --no-startup-id xset m default
-exec --no-startup-id gnome-screensaver
-exec --no-startup-id gnome-settings-daemon
-exec --no-startup-id gnome-sound-applet

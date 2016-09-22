@@ -1,0 +1,10 @@
+#!/bin/sh
+
+xsetroot -bg black &
+xset -b &
+dunst &
+
+terminator -c terminator-startup -l startup -b &
+emacs &
+firefox &
+google-chrome &
