@@ -113,6 +113,10 @@
 (global-set-key [(control x) (v) (b)] 'magit-status)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-magit-file-mode t)
+(setq magit-repository-directories '(
+				     ("~/criteo" . 1)
+				     ("~/dotfiles" . 0)
+				     ("~/.mutt" . 0)))
 
 ; confirm leaving Emacs (why would you want to, right?)
 (setq kill-emacs-query-functions
@@ -318,11 +322,11 @@ that uses 'font-lock-warning-face'."
 ;(require 'smart-mode-line)
 ;(sml/setup)
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-;; Replace "sbcl" with the path to your implementation
-;; (setq inferior-lisp-program "~/ccl/dx86cl64")
-(setq slime-lisp-implementations '((clozure ("~/ccl/dx86cl64") :coding-system utf-8-unix)
-				   (sbcl ("/usr/local/bin/sbcl"))))
+;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;; ;; Replace "sbcl" with the path to your implementation
+;; ;; (setq inferior-lisp-program "~/ccl/dx86cl64")
+;; (setq slime-lisp-implementations '((clozure ("~/ccl/dx86cl64") :coding-system utf-8-unix)
+;; 				   (sbcl ("/usr/local/bin/sbcl"))))
 
 ;; http://www.emacswiki.org/emacs/Edit_with_Emacs
 ;; (require 'edit-server)
