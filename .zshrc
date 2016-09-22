@@ -73,7 +73,12 @@ export GROOVY_HOME=/usr/local/opt/groovy/libexec
 # avoid being throttled by GH
 # Personal tokens are here: https://github.com/settings/tokens
 export HOMEBREW_GITHUB_API_TOKEN=""
+
+# Ruby, Gem, Chef
 eval "$(rbenv init -)"
+# https://raw.githubusercontent.com/gma/bundler-exec/master/bundler-exec.sh
+[ -f ~/.bundler-exec.sh ] && source ~/.blunder-exec.sh
+alias be='bundle exec'
 
 autoload -U compinit
 compinit
