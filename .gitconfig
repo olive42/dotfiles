@@ -3,6 +3,7 @@
 	email = olivier@tharan.org
 [core]
 	editor = emacs
+	# editor = emacsclient -t -a vim
 	pager = less -FRSX
 [alias]
 	alias = !git config --get-regexp alias
