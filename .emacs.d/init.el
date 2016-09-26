@@ -2,18 +2,22 @@
 ; Emacs configuration
 ; Olivier Tharan <olivier@tharan.org>
 
-; load-path - yes, there's more than one way to do it
-;; (setq load-path
-;;       (append (list "~/.emacs.d")
-;;               load-path))
-;; (setq load-path (cons "~/.emacs.d/org-7.4/lisp" load-path))
-;(add-to-list 'load-path "~/.emacs.d/emacs-nav-20090824b")
-
 ;; Syntax Highlight
 ;; (require 'font-lock)
 ;; (global-font-lock-mode t)
 
-;; Package management
+;;; Initial setup
+(defconst oth/emacs-directory (concat (getenv "HOME") "/.emacs.d/"))
+(defun oth/emacs-subdirectory (d) (expand-file-name d oth/emacs-directory))
+; make sure some directories exist
+(let* ((subdirs '("elisp" "backups"))
+       (fulldirs (mapcar (lambda (d) (oth/emacs-subdirectory d)) subdirs)))
+  (dolist (dir fulldirs)
+    (when (not (file-exists-p dir))
+      (message "Make directory: %s" dir)
+      (make-directory dir))))
+
+;;; Package management
 (require 'package)
 (setq
  package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -26,128 +30,29 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-
-(use-package magit :ensure t)
-(use-package helm
-  :ensure t
-  :bind (("M-x" . helm-M-x)
-	 ("C-x C-m" . helm-M-x)
-	 ("C-c C-m" . helm-M-x)
-	 ("C-x b" . helm-mini)))
-
-(add-hook 'text-mode-hook
-          '(lambda () (auto-fill-mode t) ))
-(add-hook 'text-mode-hook
-          '(lambda () (setq fill-column 78)))
-
-;; variables
-(setq add-log-mailing-address "olivier@tharan.org")
-(setq battery-update-interval 300)
-(setq blink-cursor-mode nil)
-(setq browse-url-browser-function (quote browse-url-generic))
-(setq browse-url-generic-args (quote ("--incognito" "--user-data-dir=/tmp")))
-(setq browse-url-generic-program "google-chrome")
-(setq case-fold-search t)
-(setq column-number-mode t)
-(setq create-lockfiles nil)
-(setq desktop-dirname "~/.emacs.d")
-(setq display-time-24hr-format t)
-(setq history-length 250)
-(setq indicate-empty-lines t)
-(setq inhibit-startup-screen t)
-(setq initial-scratch-message nil)
-(setq make-backup-files nil)
-(setq menu-bar-mode nil)
-(setq next-line-add-newlines nil)
-(setq package-selected-packages (quote (use-package magit helm ensime scala-mode)))
-(setq py-indent-offset 2)
-(setq rcirc-authinfo
-      (quote
-       (("freenode" nickserv "oth" "insert-password-here"))))
-(setq rcirc-buffer-maximum-lines 10000)
-(setq rcirc-default-full-name "olive")
-(setq rcirc-default-user-name "olive")
-(setq rcirc-server-alist
-      (quote
-       (("irc.freenode.net" :nick "oth" :port 6697 :channels
-	 ("##computer" "##computer-enthusiasm")
-	 :encryption tls))))
-(setq require-final-newline t)
-(setq safe-local-variable-values (quote ((graphviz-dot-indent-width . 2))))
-(setq scroll-error-top-bottom t)
-(setq sentence-end-double-space nil)
-(setq show-paren-delay 0.5)
-(setq show-paren-mode t)
-(setq tool-bar-mode nil)
+(setq package-selected-packages (quote (use-package magit helm helm-mt use-package ensime scala-mode)))
 (setq use-package-always-ensure t)
-(setq visible-bell t)
-
-; display time in modeline
-(display-time-mode 1)
-
-; ibuffer
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-; keybindings
-; == C-x 1 (display only one window)
-(global-set-key [f1] 'delete-other-windows)
-; == C-x 2
-(global-set-key [f2] 'split-window-vertically)
-; == C-x 3
-(global-set-key [f3] 'split-window-horizontally)
-; == C-x o
-(global-set-key [(control tab)] 'other-window)
-(global-set-key [f4] 'other-window)
-; join this and next line
-(global-set-key [f8] (lambda() (interactive) (join-line 1)))
-
-(defun oth-split-and-balance ()
-  "Split frame in 3 balanced windows horizontally."
-  (interactive)
-  (split-window-horizontally)
-  (split-window-horizontally)
-  (balance-windows))
-;(global-set-key [f5] 'oth-split-and-balance)
-(global-set-key [f7] 'delete-other-windows-vertically)
-
-(global-set-key [(control x) (v) (b)] 'magit-status)
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-magit-file-mode t)
-(setq magit-repository-directories '(
-				     ("~/criteo" . 1)
-				     ("~/dotfiles" . 0)
-				     ("~/.mutt" . 0)))
 
 ; confirm leaving Emacs (why would you want to, right?)
 (setq kill-emacs-query-functions
       (cons (lambda () (y-or-n-p "Really kill Emacs? "))
             kill-emacs-query-functions))
 
-; http://emacs-fu.blogspot.com/2008/12/showing-line-numbers.html
-(require 'linum)
-(global-linum-mode t)
-(global-set-key (kbd "<f6>") 'linum-mode)
+; save desktop - every 10 minutes
+(desktop-save-mode t)
+(setq desktop-save t)
+(add-to-list 'desktop-globals-to-save 'file-name-history)
+(setq desktop-restore-eager 10)
+(run-at-time "10 min" (* 10 60) 'desktop-save-in-desktop-dir)
 
-; http://nflath.com/2009/07/more-random-emacs-config/
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'reverse)
-(setq uniquify-separator "/")
-; re-uniquify after a buffer gets killed
-(setq uniquify-after-kill-buffer-p t)
-; don't mess with special buffers (*scratch*, etc.)
-(setq uniquify-ignore-buffers-re "^\\*")
+;;; General appearance
+(setq battery-update-interval 300)
+(setq display-time-24hr-format t)
+; display time in modeline
+(display-time-mode 1)
 
-; this colours your text over the specified limit in red
-(defun font-lock-width-keyword (width)
-  "Return a font-lock style keyword for a string beyond width WIDTH
-that uses 'font-lock-warning-face'."
-  `((,(format "^%s\\(.+\\)" (make-string width ?.))
-     (1 font-lock-warning-face t))))
-(font-lock-add-keywords 'c++-mode (font-lock-width-keyword 80))
-(font-lock-add-keywords 'python-mode (font-lock-width-keyword 80))
-(font-lock-add-keywords 'python (font-lock-width-keyword 80))
-(font-lock-add-keywords 'java-mode (font-lock-width-keyword 80))
-(font-lock-add-keywords 'borgmon-mode (font-lock-width-keyword 80))
+(setq tool-bar-mode nil)
+(setq visible-bell t)
 
 ; frame appearance
 (setq initial-frame-alist '(
@@ -163,32 +68,136 @@ that uses 'font-lock-warning-face'."
                             (height . 77) (width . 108)
                             (vertical-scroll-bars . nil)
                                                  ))
-; icomplete is faster than ido IME
-(icomplete-mode 1)
-(show-paren-mode 1)
 
-; save desktop - every 10 minutes
-(desktop-save-mode t)
-(setq desktop-save t)
-(add-to-list 'desktop-globals-to-save 'file-name-history)
-(setq desktop-restore-eager 10)
-(run-at-time "10 min" (* 10 60) 'desktop-save-in-desktop-dir)
-
-;; (add-hook 'rcirc-mode-hook
-;;        (lambda ()
-;;          (rcirc-track-minor-mode 1)))
-
-; automatically revert files which changed outside of emacs. Useful
-; for git
-(global-auto-revert-mode t)
+; == C-x 1 (display only one window)
+(global-set-key [f1] 'delete-other-windows)
+; == C-x 2
+(global-set-key [f2] 'split-window-vertically)
+; == C-x 3
+(global-set-key [f3] 'split-window-horizontally)
+; == C-x o
+; Used in other apps (Terminator) to switch between windows
+(global-set-key [(control tab)] 'other-window)
+; of course, magit overrides C-tab and I used F4 before
+(global-set-key [f4] 'other-window)
+;; Was useful on a 30" screen, not quite on smaller screens.
+;; (defun oth-split-and-balance ()
+;;   "Split frame in 3 balanced windows horizontally."
+;;   (interactive)
+;;   (split-window-horizontally)
+;;   (split-window-horizontally)
+;;   (balance-windows))
+;(global-set-key [f5] 'oth-split-and-balance)
+(global-set-key [f7] 'delete-other-windows-vertically)
 
 ;; C-c ← window undo; C-c → window redo
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
-; F-yeah (but slow?)
-;; (global-whitespace-mode t)
+;;; Editing
 
+(setq create-lockfiles nil)
+(setq desktop-dirname "~/.emacs.d")
+(setq history-length 250)
+(setq indicate-empty-lines t)
+(setq inhibit-startup-screen t)
+(setq initial-scratch-message nil)
+(setq make-backup-files nil)
+(setq menu-bar-mode nil)
+(setq next-line-add-newlines nil)
+(setq column-number-mode t)
+(setq blink-cursor-mode nil)
+(setq sentence-end-double-space nil)
+(setq show-paren-mode t)
+(setq show-paren-delay 0.5)
+(setq require-final-newline t)
+
+(setq case-fold-search t)
+
+; icomplete is faster than ido IME
+(icomplete-mode 1)
+(use-package helm
+  :ensure t
+  :bind (("M-x" . helm-M-x)
+	 ("C-x C-m" . helm-M-x)
+	 ("C-c C-m" . helm-M-x)
+	 ("C-x b" . helm-mini)))
+
+; automatically revert files which changed outside of emacs. Useful
+; for git
+(global-auto-revert-mode t)
+
+(setq browse-url-browser-function (quote browse-url-generic))
+(setq browse-url-generic-args (quote ("--incognito" "--user-data-dir=/tmp")))
+(setq browse-url-generic-program "google-chrome")
+
+; http://emacs-fu.blogspot.com/2008/12/showing-line-numbers.html
+(require 'linum)
+(global-linum-mode t)
+(global-set-key (kbd "<f6>") 'linum-mode)
+
+; join this and next line
+(global-set-key [f8] (lambda() (interactive) (join-line 1)))
+
+; http://nflath.com/2009/07/more-random-emacs-config/
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'reverse)
+(setq uniquify-separator "/")
+; re-uniquify after a buffer gets killed
+(setq uniquify-after-kill-buffer-p t)
+; don't mess with special buffers (*scratch*, etc.)
+(setq uniquify-ignore-buffers-re "^\\*")
+
+;;; General modes
+(add-hook 'text-mode-hook
+          '(lambda () (auto-fill-mode t) ))
+(add-hook 'text-mode-hook
+          '(lambda () (setq fill-column 78)))
+
+;;; Programming modes
+;; Magit
+(use-package magit :ensure t)
+(global-set-key [(control x) (v) (b)] 'magit-status)
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-magit-file-mode t)
+(setq magit-repository-directories '(
+				     ("~/criteo" . 1)
+				     ("~/dotfiles" . 0)
+				     ("~/.mutt" . 0)))
+
+; this colours your text over the specified limit in red
+(defun font-lock-width-keyword (width)
+  "Return a font-lock style keyword for a string beyond width WIDTH
+that uses 'font-lock-warning-face'."
+  `((,(format "^%s\\(.+\\)" (make-string width ?.))
+     (1 font-lock-warning-face t))))
+(font-lock-add-keywords 'c++-mode (font-lock-width-keyword 80))
+(font-lock-add-keywords 'python-mode (font-lock-width-keyword 80))
+(font-lock-add-keywords 'python (font-lock-width-keyword 80))
+(font-lock-add-keywords 'java-mode (font-lock-width-keyword 80))
+(font-lock-add-keywords 'borgmon-mode (font-lock-width-keyword 80))
+
+; F-yeah (but slow? -- moving to only prog-mode)
+;; (global-whitespace-mode t)
+(require 'whitespace)
+(setq whitespace-line-column 80)
+(setq whitespace-style '(face-lines-tail))
+(add-hook 'prog-mode-hook 'whitespace-mode)
+
+;; Python
+(setq py-indent-offset 2)
+
+;; Ruby
+
+;; ENSIME for Scala
+(setq exec-path (append exec-path '("/usr/local/bin")))
+(setq exec-path (append exec-path '("/usr/local/sbin")))
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(use-package ensime
+	     :pin melpa-stable)
+;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+;;; Misc
 ; http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/
 (use-package multi-term
   :ensure t)
@@ -204,56 +213,35 @@ that uses 'font-lock-warning-face'."
             ;; (autopair-mode -1)
             ))
 
-; TODO(olive): do something with it
-;; https://chrome.google.com/webstore/detail/ljobjlafonikaiipfkggjbhkghgicgoh
-;; (require 'edit-server)
-;; (edit-server-start)
-;; (add-hook 'edit-server-start-hook
-;;        (lambda()
-;;          (w3m-buffer)
-;;          (goto-char (point-min))
-;;          (insert "<pre>\n")))
+(add-hook 'rcirc-mode-hook 
+	  (lambda ()
+	    (set-input-method "french-postfix")))
+;; (add-hook 'rcirc-mode-hook
+;;        (lambda ()
+;;          (rcirc-track-minor-mode 1)))
+(setq rcirc-authinfo
+      (quote
+       (("freenode" nickserv "oth" "insert-password-here"))))
+(setq rcirc-buffer-maximum-lines 10000)
+(setq rcirc-default-full-name "olive")
+(setq rcirc-default-user-name "olive")
+(setq rcirc-server-alist
+      (quote
+       (("irc.freenode.net" :nick "oth" :port 6697 :channels
+	 ("##computer" "##computer-enthusiasm")
+	 :encryption tls))))
 
-;; eproject.el (part of emacs-goodies-el)
-;; (require 'eproject)
+;;;
 
-;; Puppet mode instead of Borgcfg
-;; https://raw.githubusercontent.com/puppetlabs/puppet-syntax-emacs/master/puppet-mode.el
-;; (setq auto-mode-alist
-;;       (delete* "\\.pp$" auto-mode-alist :test 'string= :key 'car))
-;; (require 'puppet-mode)
-;; (setq auto-mode-alist
-;;       (cons '("\\.pp" . puppet-mode) auto-mode-alist))
+;; variables
+(setq add-log-mailing-address "olivier@tharan.org")
 
-; M-: (info ("dired-x")) -- also not sure what effect this has on my
-; daily workflow
-(add-hook 'dired-load-hook
-          (lambda ()
-            (load "dired-x")
-            ;; Set dired-x global variables here.  For example:
-            ;; (setq dired-guess-shell-gnutar "gtar")
-            ;; (setq dired-x-hands-off-my-keys nil)
-            (setq dired-find-subdir t)
-            ))
-(add-hook 'dired-mode-hook
-          (lambda ()
-            ;; Set dired-x buffer-local variables here.  For example:
-            ;; (dired-omit-mode 1)
-            ))
+(setq scroll-error-top-bottom t)
 
-;; ENSIME for Scala
-(setq exec-path (append exec-path '("/usr/local/bin")))
-(setq exec-path (append exec-path '("/usr/local/sbin")))
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(use-package ensime
-	     :pin melpa-stable)
-;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
-(require 'whitespace)
-(setq whitespace-line-column 80)
-(setq whitespace-style '(face-lines-tail))
-(add-hook 'prog-mode-hook 'whitespace-mode)
-;;
+; ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 ;; DEPRECATED but kept for sentimental or documentation reasons
 ;;
 
@@ -298,22 +286,12 @@ that uses 'font-lock-warning-face'."
 ;; (defvar backup-dir (concat "/tmp/emacs_backups/" (user-login-name) "/"))
 ;; (setq backup-directory-alist (list (cons "." backup-dir)))
 
-; mode de minuit - FIXME see if still relevant
-;; (require 'midnight)
-
-; boxquote
-;(require 'boxquote)
-
 ; http://nflath.com/2009/07/emacs-bankruptcy-and-new-beginnings/
 ; icomplete-mode is faster, see above
 ;; (setq ido-enable-flex-matching t)
 ;; (ido-mode t)
 ;; (ido-everywhere t)
 ;; (setq ido-max-prospects 0)
-
-(add-hook 'rcirc-mode-hook 
-	  (lambda ()
-	    (set-input-method "french-postfix")))
 
 ;; (add-hook 'before-save-hook
 ;; 	  'gofmt-before-save)
@@ -378,10 +356,53 @@ that uses 'font-lock-warning-face'."
 ;;       smtpmail-smtp-server "smtp.gmail.com"
 ;;       smtpmail-smtp-service 587)
 
+; load-path - yes, there's more than one way to do it -- keep it for reference
+;; (setq load-path
+;;       (append (list "~/.emacs.d")
+;;               load-path))
+;; (setq load-path (cons "~/.emacs.d/org-7.4/lisp" load-path))
+;(add-to-list 'load-path "~/.emacs.d/emacs-nav-20090824b")
+
+; mode de minuit - FIXME see if still relevant
+;; (require 'midnight)
+
+; boxquote
+;(require 'boxquote)
+
+; TODO(olive): do something with it
+;; https://chrome.google.com/webstore/detail/ljobjlafonikaiipfkggjbhkghgicgoh
+;; (require 'edit-server)
+;; (edit-server-start)
+;; (add-hook 'edit-server-start-hook
+;;        (lambda()
+;;          (w3m-buffer)
+;;          (goto-char (point-min))
+;;          (insert "<pre>\n")))
+
+;; eproject.el (part of emacs-goodies-el)
+;; (require 'eproject)
+
+;; Puppet mode instead of Borgcfg
+;; Was useful at Google. Keeping it to remember how I remove something from a list
+;; https://raw.githubusercontent.com/puppetlabs/puppet-syntax-emacs/master/puppet-mode.el
+;; (setq auto-mode-alist
+;;       (delete* "\\.pp$" auto-mode-alist :test 'string= :key 'car))
+;; (require 'puppet-mode)
+;; (setq auto-mode-alist
+;;       (cons '("\\.pp" . puppet-mode) auto-mode-alist))
+
+; M-: (info ("dired-x")) -- also not sure what effect this has on my
+; daily workflow
+;; (add-hook 'dired-load-hook
+;;           (lambda ()
+;;             (load "dired-x")
+;;             ;; Set dired-x global variables here.  For example:
+;;             ;; (setq dired-guess-shell-gnutar "gtar")
+;;             ;; (setq dired-x-hands-off-my-keys nil)
+;;             (setq dired-find-subdir t)
+;;             ))
+
+;; FIXME: check if still relevant
+;; (setq safe-local-variable-values (quote ((graphviz-dot-indent-width . 2))))
+
 ;; Require a final newline in a file, to avoid confusing some tools
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
