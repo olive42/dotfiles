@@ -188,6 +188,43 @@ that uses 'font-lock-warning-face'."
 (setq py-indent-offset 2)
 
 ;; Ruby
+(use-package inf-ruby
+  :ensure t
+  :pin melpa-stable
+  (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
+(use-package smartparens
+  :ensure t
+  :pin melpa-stable
+  :init
+  (add-hook 'ruby-mode-hook 'smartparens-strict-mode)
+  :diminish smartparens-mode)
+(use-package rubocop
+  :ensure t
+  :pin melpa-stable
+  :init
+  (add-hook 'ruby-mode-hook 'rubocop-mode)
+  :diminish rubocop-mode)
+(use-package flycheck
+  :no-require t
+  :config
+  (flycheck-define-checker chef-foodcritic
+   "A Chef cookbook syntax checker using Foodcritic.
+   See URL `http://acrmp.github.io/foodcritic/'."
+   :command ("bundle exec foodcritic" source)
+   :error-patterns
+   ((error line-start (message) ": " (file-name) ":" line line-end))
+   :modes (enh-ruby-mode ruby-mode)
+   :predicate
+   (lambda ()
+     (let ((parent-dir) (file-name-directory (buffer-file-name))))
+     (or
+      ;; Chef Cookbook
+      ;; https://docs.opscode.com/chef/knife.html#id38
+      (locate-dominating-file parent-dir "recipes")
+      ;; Knife Solo
+      ;; http://mattschaffer.github.io/knife-solo/#label-Init+Command
+      (locate-dominating-file parent-dir "cookbooks"))))
+  :next-checkers ((warnings-only . ruby-rubocop)))
 
 ;; ENSIME for Scala
 (setq exec-path (append exec-path '("/usr/local/bin")))
