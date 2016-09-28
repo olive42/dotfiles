@@ -32,6 +32,7 @@
 (require 'use-package)
 (setq package-selected-packages (quote (use-package magit helm helm-mt use-package ensime scala-mode)))
 (setq use-package-always-ensure t)
+(setq use-package-always-pin "melpa-stable")
 
 ; confirm leaving Emacs (why would you want to, right?)
 (setq kill-emacs-query-functions
@@ -127,6 +128,21 @@
 ; for git
 (global-auto-revert-mode t)
 
+; https://emacs.stackexchange.com/questions/19672/magit-gerrit-push-to-other-branch
+; TODO: replace 'master' with remote branch name ('develop'?)
+(defun magit-push-to-gerrit (&optional remote)
+  (interactive)
+  (let ((remote1 (or remote "master")))
+    (magit-git-command (concat "push origin HEAD:refs/publish/" remote1) (magit-toplevel))))
+(magit-define-popup-action 'magit-push-popup
+  ?m
+  "Push to gerrit"
+  'magit-push-to-gerrit)
+(magit-define-popup-action 'magit-push-popup
+  ?M
+  "Push to gerrit (develop)"
+  '(magit-push-to-gerrit "develop"))
+
 (setq browse-url-browser-function (quote browse-url-generic))
 (setq browse-url-generic-args (quote ("--incognito" "--user-data-dir=/tmp")))
 (setq browse-url-generic-program "google-chrome")
@@ -189,18 +205,12 @@ that uses 'font-lock-warning-face'."
 
 ;; Ruby
 (use-package inf-ruby
-  :ensure t
-  :pin melpa-stable
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
 (use-package smartparens
-  :ensure t
-  :pin melpa-stable
   :init
   (add-hook 'ruby-mode-hook 'smartparens-strict-mode)
   :diminish smartparens-mode)
 (use-package rubocop
-  :ensure t
-  :pin melpa-stable
   :init
   (add-hook 'ruby-mode-hook 'rubocop-mode)
   :diminish rubocop-mode)
@@ -230,16 +240,13 @@ that uses 'font-lock-warning-face'."
 (setq exec-path (append exec-path '("/usr/local/bin")))
 (setq exec-path (append exec-path '("/usr/local/sbin")))
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(use-package ensime
-	     :pin melpa-stable)
+(use-package ensime)
 ;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
 ;;; Misc
 ; http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/
-(use-package multi-term
-  :ensure t)
-(use-package helm-mt
-  :ensure t)
+(use-package multi-term)
+(use-package helm-mt)
 (setq multi-term-program "/bin/zsh")
 (add-hook 'term-mode-hook
           (lambda ()
