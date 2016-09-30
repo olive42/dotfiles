@@ -2,10 +2,6 @@
 ; Emacs configuration
 ; Olivier Tharan <olivier@tharan.org>
 
-;; Syntax Highlight
-;; (require 'font-lock)
-;; (global-font-lock-mode t)
-
 ;;; Initial setup
 (defconst oth/emacs-directory (concat (getenv "HOME") "/.emacs.d/"))
 (defun oth/emacs-subdirectory (d) (expand-file-name d oth/emacs-directory))
@@ -22,7 +18,6 @@
 (setq
  package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
 		    ("org" . "http://orgmode.org/elpa/")
-		    ("melpa" . "https://melpa.org/packages/")
 		    ("melpa-stable" . "https://stable.melpa.org/packages/")))
 (package-initialize)
 (when (not
@@ -30,9 +25,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-(setq package-selected-packages (quote (use-package magit helm helm-mt use-package ensime scala-mode)))
+;; (setq package-selected-packages (quote (use-package magit helm helm-mt use-package ensime scala-mode)))
 (setq use-package-always-ensure t)
-(setq use-package-always-pin "melpa-stable")
 
 ; confirm leaving Emacs (why would you want to, right?)
 (setq kill-emacs-query-functions
@@ -47,14 +41,6 @@
 (run-at-time "10 min" (* 10 60) 'desktop-save-in-desktop-dir)
 
 ;;; General appearance
-(setq battery-update-interval 300)
-(setq display-time-24hr-format t)
-; display time in modeline
-(display-time-mode 1)
-
-(setq tool-bar-mode nil)
-(setq visible-bell t)
-
 ; frame appearance
 (setq initial-frame-alist '(
                             (menu-bar-lines . 0)
@@ -69,6 +55,13 @@
                             (height . 77) (width . 108)
                             (vertical-scroll-bars . nil)
                                                  ))
+(setq battery-update-interval 300)
+(setq display-time-24hr-format t)
+; display time in modeline
+(display-time-mode 1)
+
+(setq tool-bar-mode nil)
+(setq visible-bell t)
 
 ; == C-x 1 (display only one window)
 (global-set-key [f1] 'delete-other-windows)
@@ -96,7 +89,6 @@
   (winner-mode 1))
 
 ;;; Editing
-
 (setq create-lockfiles nil)
 (setq desktop-dirname "~/.emacs.d")
 (setq history-length 250)
@@ -112,13 +104,14 @@
 (setq show-paren-mode t)
 (setq show-paren-delay 0.5)
 (setq require-final-newline t)
-
 (setq case-fold-search t)
+(setq-default indent-tabs-mode nil)
+;; https://emacs.stackexchange.com/questions/3322/python-auto-indent-problem
+(electric-indent-mode -1)
 
 ; icomplete is faster than ido IME
-(icomplete-mode 1)
+;; (icomplete-mode 1)
 (use-package helm
-  :ensure t
   :bind (("M-x" . helm-M-x)
 	 ("C-x C-m" . helm-M-x)
 	 ("C-c C-m" . helm-M-x)
@@ -127,21 +120,6 @@
 ; automatically revert files which changed outside of emacs. Useful
 ; for git
 (global-auto-revert-mode t)
-
-; https://emacs.stackexchange.com/questions/19672/magit-gerrit-push-to-other-branch
-; TODO: replace 'master' with remote branch name ('develop'?)
-(defun magit-push-to-gerrit (&optional remote)
-  (interactive)
-  (let ((remote1 (or remote "master")))
-    (magit-git-command (concat "push origin HEAD:refs/publish/" remote1) (magit-toplevel))))
-(magit-define-popup-action 'magit-push-popup
-  ?m
-  "Push to gerrit"
-  'magit-push-to-gerrit)
-(magit-define-popup-action 'magit-push-popup
-  ?M
-  "Push to gerrit (develop)"
-  '(magit-push-to-gerrit "develop"))
 
 (setq browse-url-browser-function (quote browse-url-generic))
 (setq browse-url-generic-args (quote ("--incognito" "--user-data-dir=/tmp")))
@@ -172,7 +150,7 @@
 
 ;;; Programming modes
 ;; Magit
-(use-package magit :ensure t)
+(use-package magit)
 (global-set-key [(control x) (v) (b)] 'magit-status)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-magit-file-mode t)
@@ -180,6 +158,20 @@
 				     ("~/criteo" . 1)
 				     ("~/dotfiles" . 0)
 				     ("~/.mutt" . 0)))
+; https://emacs.stackexchange.com/questions/19672/magit-gerrit-push-to-other-branch
+; TODO: replace 'master' with remote branch name ('develop'?)
+(defun magit-push-to-gerrit (&optional remote)
+  (interactive)
+  (let ((remote1 (or remote "master")))
+    (magit-git-command (concat "push origin HEAD:refs/publish/" remote1) (magit-toplevel))))
+(magit-define-popup-action 'magit-push-popup
+  ?m
+  "Push to gerrit"
+  'magit-push-to-gerrit)
+(magit-define-popup-action 'magit-push-popup
+  ?M
+  "Push to gerrit (develop)"
+  '(magit-push-to-gerrit "develop"))
 
 ; this colours your text over the specified limit in red
 (defun font-lock-width-keyword (width)
@@ -193,18 +185,12 @@ that uses 'font-lock-warning-face'."
 (font-lock-add-keywords 'java-mode (font-lock-width-keyword 80))
 (font-lock-add-keywords 'borgmon-mode (font-lock-width-keyword 80))
 
-; F-yeah (but slow? -- moving to only prog-mode)
-;; (global-whitespace-mode t)
-(require 'whitespace)
-(setq whitespace-line-column 80)
-(setq whitespace-style '(face-lines-tail))
-(add-hook 'prog-mode-hook 'whitespace-mode)
-
 ;; Python
 (setq py-indent-offset 2)
 
 ;; Ruby
 (use-package inf-ruby
+  :init
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
 (use-package smartparens
   :init
@@ -233,8 +219,16 @@ that uses 'font-lock-warning-face'."
       (locate-dominating-file parent-dir "recipes")
       ;; Knife Solo
       ;; http://mattschaffer.github.io/knife-solo/#label-Init+Command
-      (locate-dominating-file parent-dir "cookbooks"))))
-  :next-checkers ((warnings-only . ruby-rubocop)))
+      (locate-dominating-file parent-dir "cookbooks")))
+   :next-checkers ((warnings-only . ruby-rubocop))))
+
+;; Groovy
+(use-package groovy-mode)
+;;   :init
+;;   (add-hook 'groovy-mode-hook
+;; 	    '(lambda ()
+;; 	       (require 'groovy-electric)
+;; 	       (groovy-electric-mode))))
 
 ;; ENSIME for Scala
 (setq exec-path (append exec-path '("/usr/local/bin")))
@@ -247,7 +241,7 @@ that uses 'font-lock-warning-face'."
 ; http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/
 (use-package multi-term)
 (use-package helm-mt)
-(setq multi-term-program "/bin/zsh")
+(setq multi-term-program "/usr/bin/zsh")
 (add-hook 'term-mode-hook
           (lambda ()
             (setq term-buffer-maximum-size 10000)))
@@ -275,6 +269,8 @@ that uses 'font-lock-warning-face'."
 	 ("##computer" "##computer-enthusiasm")
 	 :encryption tls))))
 
+(use-package wttrin)
+(setq wttrin-default-cities (quote ("Paris" "paris" "bourg-la-Reine")))
 ;;;
 
 ;; variables
