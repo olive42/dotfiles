@@ -77,7 +77,7 @@ export HOMEBREW_GITHUB_API_TOKEN=""
 # Ruby, Gem, Chef
 eval "$(rbenv init -)"
 # https://raw.githubusercontent.com/gma/bundler-exec/master/bundler-exec.sh
-[ -f ~/.bundler-exec.sh ] && source ~/.blunder-exec.sh
+[ -f ~/.bundler-exec.sh ] && source ~/.bundler-exec.sh
 alias be='bundle exec'
 
 autoload -U compinit
