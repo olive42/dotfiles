@@ -18,6 +18,7 @@
 (setq
  package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
 		    ("org" . "http://orgmode.org/elpa/")
+		    ("melpa" . "https://melpa.org/packages/")
 		    ("melpa-stable" . "https://stable.melpa.org/packages/")))
 (package-initialize)
 (when (not
@@ -27,6 +28,7 @@
 (require 'use-package)
 ;; (setq package-selected-packages (quote (use-package magit helm helm-mt use-package ensime scala-mode)))
 (setq use-package-always-ensure t)
+(setq use-package-always-pin "melpa-stable")
 
 ; confirm leaving Emacs (why would you want to, right?)
 (setq kill-emacs-query-functions
@@ -239,7 +241,8 @@ that uses 'font-lock-warning-face'."
 
 ;;; Misc
 ; http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/
-(use-package multi-term)
+(use-package multi-term
+  :pin "melpa")
 (use-package helm-mt)
 (setq multi-term-program "/usr/bin/zsh")
 (add-hook 'term-mode-hook
