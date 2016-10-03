@@ -156,6 +156,14 @@
 (add-hook 'text-mode-hook
           '(lambda () (setq fill-column 78)))
 
+(use-package bbdb
+  :pin "melpa"
+  :config
+  (bbdb-initialize 'gnus 'message)
+  (bbdb-mua-auto-update-init 'gnus 'message)
+  (setq bbdb-mua-pop-up-window-size 1)
+  (setq bbdb-phone-style nil))
+
 ;;;; Programming modes
 ;;;; Magit
 (use-package magit)
