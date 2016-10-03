@@ -7,6 +7,7 @@
 (require 'starttls)
 (setq starttls-use-gnutls t)
 
+;;;; Getting email
 (setq gnus-nntp-server nil)
 (setq gnus-select-method '(nnimap "outlook.office365.com"
 		      (nnimap-address "outlook.office365.com")
@@ -19,6 +20,7 @@
 		      (nnimap-authinfo-file "~/.authinfo.gpg")
       ))
 
+;;;; Threads and topics
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 (setq gnus-summary-thread-gathering-function
       'gnus-gather-threads-by-subject)
@@ -26,6 +28,11 @@
 (setq gnus-thread-ignore-subject t)
 (setq mm-text-html-renderer 'gnus-w3m)
 
+;;;; Expiry
+(setq gnus-auto-expirable-newsgroups
+      '("INBOX/Alerts" "INBOX"))
+
+;;;; Sending email
 (setq message-send-mail-function 'smtpmail-send-it
       smtpmail-auth-credentials (expand-file-name "~/.authinfo.gpg")
       smtpmail-stream-type 'starttls
