@@ -13,7 +13,7 @@
       (message "Make directory: %s" dir)
       (make-directory dir))))
 
-;;; Package management
+;;;; Package management
 (require 'package)
 (setq
  package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -30,6 +30,12 @@
 (setq use-package-always-ensure t)
 (setq use-package-always-pin "melpa-stable")
 
+;; http://milkbox.net/note/single-file-master-emacs-configuration/
+(defun imenu-elisp-sections()
+  (setq imenu-prev-index-position-function nil)
+  (add-to-list 'imenu-generic-expression '("Sections" "^;;;; \\(.+\\)$" 1) t))
+(add-hook 'emacs-lisp-mode-hook 'imenu-elisp-sections)
+
 ; confirm leaving Emacs (why would you want to, right?)
 (setq kill-emacs-query-functions
       (cons (lambda () (y-or-n-p "Really kill Emacs? "))
@@ -42,7 +48,7 @@
 (setq desktop-restore-eager 10)
 (run-at-time "10 min" (* 10 60) 'desktop-save-in-desktop-dir)
 
-;;; General appearance
+;;;; General appearance
 ; frame appearance
 (setq initial-frame-alist '(
                             (menu-bar-lines . 0)
@@ -90,7 +96,7 @@
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
-;;; Editing
+;;;; Editing
 (setq create-lockfiles nil)
 (setq desktop-dirname "~/.emacs.d")
 (setq history-length 250)
@@ -144,14 +150,14 @@
 ; don't mess with special buffers (*scratch*, etc.)
 (setq uniquify-ignore-buffers-re "^\\*")
 
-;;; General modes
+;;;; General modes
 (add-hook 'text-mode-hook
           '(lambda () (auto-fill-mode t) ))
 (add-hook 'text-mode-hook
           '(lambda () (setq fill-column 78)))
 
-;;; Programming modes
-;; Magit
+;;;; Programming modes
+;;;; Magit
 (use-package magit)
 (global-set-key [(control x) (v) (b)] 'magit-status)
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -187,10 +193,10 @@ that uses 'font-lock-warning-face'."
 (font-lock-add-keywords 'java-mode (font-lock-width-keyword 80))
 (font-lock-add-keywords 'borgmon-mode (font-lock-width-keyword 80))
 
-;; Python
+;;;; Python
 (setq py-indent-offset 2)
 
-;; Ruby
+;;;; Ruby
 (use-package inf-ruby
   :init
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
@@ -224,7 +230,7 @@ that uses 'font-lock-warning-face'."
       (locate-dominating-file parent-dir "cookbooks")))
    :next-checkers ((warnings-only . ruby-rubocop))))
 
-;; Groovy
+;;;; Groovy
 (use-package groovy-mode)
 ;;   :init
 ;;   (add-hook 'groovy-mode-hook
@@ -232,14 +238,14 @@ that uses 'font-lock-warning-face'."
 ;; 	       (require 'groovy-electric)
 ;; 	       (groovy-electric-mode))))
 
-;; ENSIME for Scala
+;;;; ENSIME for Scala
 (setq exec-path (append exec-path '("/usr/local/bin")))
 (setq exec-path (append exec-path '("/usr/local/sbin")))
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (use-package ensime)
 ;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
-;;; Misc
+;;;; Misc
 ; http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/
 (use-package multi-term
   :pin "melpa")
@@ -276,7 +282,7 @@ that uses 'font-lock-warning-face'."
 (setq wttrin-default-cities (quote ("Paris" "paris" "bourg-la-Reine")))
 ;;;
 
-;; variables
+;;;; variables
 (setq add-log-mailing-address "olivier@tharan.org")
 
 (setq scroll-error-top-bottom t)
