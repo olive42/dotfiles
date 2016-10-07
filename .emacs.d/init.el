@@ -123,7 +123,16 @@
   :bind (("M-x" . helm-M-x)
 	 ("C-x C-m" . helm-M-x)
 	 ("C-c C-m" . helm-M-x)
-	 ("C-x b" . helm-mini)))
+	 ("C-x b" . helm-mini)
+         ("M-y" . helm-show-kill-ring)
+         ("C-x C-f" . helm-find-files))
+  :config
+  (setq helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t))
+
+(when (executable-find "ack-grep")
+  (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
+        helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
 
 ; automatically revert files which changed outside of emacs. Useful
 ; for git
