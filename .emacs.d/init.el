@@ -248,12 +248,13 @@ that uses 'font-lock-warning-face'."
    :next-checkers ((warnings-only . ruby-rubocop))))
 
 ;;;; Groovy
-(use-package groovy-mode)
-;;   :init
-;;   (add-hook 'groovy-mode-hook
-;; 	    '(lambda ()
-;; 	       (require 'groovy-electric)
-;; 	       (groovy-electric-mode))))
+(use-package groovy-mode
+  :init
+  (add-hook 'groovy-mode-hook
+	    '(lambda ()
+               (setq c-basic-offset 4)
+	       (require 'groovy-electric)
+	       (groovy-electric-mode))))
 
 ;;;; ENSIME for Scala
 (setq exec-path (append exec-path '("/usr/local/bin")))
