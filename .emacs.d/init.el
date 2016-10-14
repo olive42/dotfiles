@@ -180,8 +180,9 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-magit-file-mode t)
 (setq magit-repository-directories '(
-				     ("~/criteo" . 1)
+				     ("~/criteo" . 2)
 				     ("~/dotfiles" . 0)
+                                     ("~/workspace/bookshelf" . 0)
 				     ("~/.mutt" . 0)))
 ; https://emacs.stackexchange.com/questions/19672/magit-gerrit-push-to-other-branch
 ; TODO: replace 'master' with remote branch name ('develop'?)
