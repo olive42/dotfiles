@@ -7,4 +7,5 @@ dunst &
 terminator -c terminator-startup -l startup -b &
 emacs &
 firefox &
+slack &
 google-chrome &
