@@ -130,9 +130,18 @@
   (setq helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match t))
 
+(use-package helm-git-grep
+  :init (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
+  :bind (("C-c g" . helm-git-grep)))
+(define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
+
 (when (executable-find "ack-grep")
   (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
         helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
+
+;;; Markdown
+(use-package markdown-mode
+  :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode))
 
 ; automatically revert files which changed outside of emacs. Useful
 ; for git
