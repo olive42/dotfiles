@@ -8,3 +8,8 @@
 [alias]
 	alias = !git config --get-regexp alias
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+	# Criteo specific
+	review = push origin HEAD:refs/publish/master
+	reviewd = push origin HEAD:refs/publish/develop
+[grep]
+	lineNumber = true
