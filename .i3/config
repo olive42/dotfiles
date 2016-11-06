@@ -152,6 +152,7 @@ bindsym $mod+r mode "resize"
 bindsym $mod+Ctrl+l exec i3lock -c 000000 -e -f
 bindsym $mod+Ctrl+m exec terminator -T mutt -p mutt -c mutt -x mutt
 bindsym $mod+Ctrl+a exec terminator -T cabernet -c cabernet -x ssh cabernet
+bindsym $mod+Ctrl+i exec ~/Downloads/idea-IC-162.2032.8/bin/idea.sh
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -175,7 +176,8 @@ workspace 7 output DP-1
 assign [class="^terminator-startup$"] 1
 assign [class="^Google-chrome$"] 2
 assign [title="^emacs@le-tiret-du-6$"] 3
-assign [class="^Firefox$"] 4
+assign [class="^Firefox$"] 5
+assign [title="^Slack"] 2
 
 for_window [class="^Google-chrome$"] border none
 for_window [class="^Firefox$"] border none
