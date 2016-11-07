@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 # Make sure some directories exist
-for d in ~/.zsh.d ~/.emacs.d/lisp ~/.zfunctions ~/.i3 .config/dunst .config/terminator ; do
+for d in ~/.zsh.d ~/.emacs.d/lisp ~/.zfunctions ~/.i3 ~/.config/dunst ~/.config/terminator ~/go ~/bin ~/tmp ; do
     mkdir -p $d
 done
 
