@@ -80,6 +80,45 @@ eval "$(rbenv init -)"
 [ -f ~/.bundler-exec.sh ] && source ~/.bundler-exec.sh
 alias be='bundle exec'
 
+# Get Centreon health for a given machine
+# - Get machine name in some way (short host + prod|preprod ?)
+# - Get node entry from ~/criteo/chef-devtools/nodes/...
+# - extract line ^name 'xxx' => xxx
+# - be knife centreon host get xxx
+function centreon() {
+    local h=${1:-jenkins01-par}
+    local p=${2:-prod}
+    local knife_opts=""
+    if [[ $p = "prod" ]]; then
+	knife_opts="-c.chef/knife-prod.rb"
+    fi
+    pushd ~/criteo/chef-repositories/chef-devtools
+
+    for h1 in $(echo nodes/$p/**/$h*); do
+	macname=$(awk -F"'" '/^name/ {print $2}' $h1)
+	be knife centreon host get $macname $knife_opts
+    done
+    popd
+}
+
+function downtime() {
+    local h=${1:-jenkins01-par}
+    local d=${2:-"in 2 days"}
+    local c=${3:-"I am too lazy to put a comment"}
+    local p=${4:-prod}
+    local knife_opts=""
+    if [ $p = "prod" ]; then
+        knife_opts="-c.chef/knife-prod.rb"
+    fi
+    pushd ~/criteo/chef-repositories/chef-devtools
+
+    be knife centreon host downtime set --comment $c --to $d $h
+}
+
+alias windows='rdesktop -a 16 -z -P -g 1440x900 -u o.tharan -d PAR -x 0x20'
+
+## End of local changes
+
 autoload -U compinit
 compinit
 
