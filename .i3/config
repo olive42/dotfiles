@@ -19,7 +19,8 @@ font pango:DejaVu Sans Mono 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+# bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec gnome-terminal
 
 # kill focused window
 bindsym $mod+Shift+Q kill
@@ -149,9 +150,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Custom keybindings
-bindsym $mod+Ctrl+l exec i3lock -c 000000 -e -f
-bindsym $mod+Ctrl+m exec terminator -T mutt -p mutt -c mutt -x mutt
-bindsym $mod+Ctrl+a exec terminator -T cabernet -c cabernet -x ssh cabernet
+bindsym $mod+Ctrl+l exec i3lock --dpms --color=000000 --ignore-empty-password --show-failed-attempts
+bindsym $mod+Ctrl+a exec gnome-terminal -x ssh cabernet
 bindsym $mod+Ctrl+i exec ~/Downloads/idea-IC-162.2032.8/bin/idea.sh
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -174,13 +174,13 @@ workspace 5 output DP-1
 workspace 7 output DP-1
 
 assign [class="^terminator-startup$"] 1
-assign [class="^Google-chrome$"] 2
+assign [class="^Google-chrome$"] 5
 assign [title="^emacs@le-tiret-du-6$"] 3
-assign [class="^Firefox$"] 5
+assign [class="^Firefox$"] 2
 assign [title="^Slack"] 2
 
 for_window [class="^Google-chrome$"] border none
-for_window [class="^Firefox$"] border none
+# for_window [class="^Firefox$"] border none
 
 # Startup
 exec ~/.i3/autostart
