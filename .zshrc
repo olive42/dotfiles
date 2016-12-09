@@ -112,10 +112,12 @@ function downtime() {
     fi
     pushd ~/criteo/chef-repositories/chef-devtools
 
-    be knife centreon host downtime set --comment $c --to $d $h
+    be knife centreon ${knife_opts} host downtime set --comment $c --to $d $h
+    popd
 }
 
 alias windows='rdesktop -a 16 -z -P -g 1440x900 -u o.tharan -d PAR -x 0x20'
+alias jindows='rdesktop -a 16 -z -P -g 1440x900 -u jenkins-node -x 0x20 -p -'
 
 ## End of local changes
 
