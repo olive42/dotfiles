@@ -116,6 +116,28 @@ function downtime() {
     popd
 }
 
+# FIXME(olive): Config should be in a dict and the whole function
+# should be in a better language.
+function tmuxp() {
+    sess1='criteo1'
+
+    if [ $(tmux list-sessions -F '#{session_name}' | grep ${sess1}) ]; then
+        tmux attach-session -d -t ${sess1}
+    else
+        proj1=build-configurations
+        dir1=~/criteo/qa/${proj1}
+        proj2=chef-devtools
+        dir2=~/criteo/chef-repositories/${proj2}
+
+        tmux new-session -s criteo1
+        tmux new-window -c ${dir1} -n ${proj1}
+        tmux split-window -h -t ${proj1} -c ${dir1}
+        tmux new-window -c ${dir2} -n ${proj2}
+        tmux split-window -h -t ${proj2} -c ${dir2}
+        tmux select-window -t 0
+    fi
+}
+
 alias windows='rdesktop -a 16 -z -P -g 1440x900 -u o.tharan -d PAR -x 0x20'
 alias jindows='rdesktop -a 16 -z -P -g 1440x900 -u jenkins-node -x 0x20 -p -'
 
