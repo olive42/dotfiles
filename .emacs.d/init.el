@@ -96,6 +96,17 @@
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
+;;; Spaceline https://amitp.blogspot.fr/2017/01/emacs-spaceline-mode-line.html
+(use-package spaceline
+  :config
+  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
+
+(use-package spaceline-config
+  :ensure spaceline
+  :config
+  (spaceline-helm-mode 1)
+  (spaceline-emacs-theme))
+
 ;;;; Editing
 (setq create-lockfiles nil)
 (setq desktop-dirname "~/.emacs.d")
@@ -181,6 +192,9 @@
   (bbdb-mua-auto-update-init 'gnus 'message)
   (setq bbdb-mua-pop-up-window-size 1)
   (setq bbdb-phone-style nil))
+
+(use-package auth-password-store)
+(use-package helm-pass)
 
 ;;;; Programming modes
 ;;;; Magit
