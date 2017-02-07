@@ -1,0 +1,4 @@
+# -*- mode: sh -*-
+# When you don't want to push all your commits to Gerrit
+
+git push origin ${1}:refs/publish/master
