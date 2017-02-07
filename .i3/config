@@ -150,7 +150,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Custom keybindings
-bindsym $mod+Ctrl+l exec i3lock --dpms --color=000000 --ignore-empty-password --show-failed-attempts
+bindsym $mod+Ctrl+l exec i3lock --color=000000 --ignore-empty-password --show-failed-attempts
 bindsym $mod+Ctrl+a exec gnome-terminal -x ssh cabernet
 bindsym $mod+Ctrl+i exec ~/Downloads/idea-IC-162.2032.8/bin/idea.sh
 
