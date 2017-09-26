@@ -30,7 +30,7 @@
 
 ;;;; Expiry
 (setq gnus-auto-expirable-newsgroups
-      "INBOX\\|INBOX/Alerts")
+      "INBOX/code-reviews\\|INBOX/Alerts")
 
 ;;;; Sending email
 (setq message-send-mail-function 'smtpmail-send-it
