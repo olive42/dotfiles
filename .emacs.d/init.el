@@ -62,6 +62,7 @@
                             (font . "Inconsolata-10")
                             (height . 77) (width . 108)
                             (vertical-scroll-bars . nil)
+                            (horizontal-scroll-bars . nil)
                                                  ))
 (setq battery-update-interval 300)
 (setq display-time-24hr-format t)
@@ -69,6 +70,7 @@
 (display-time-mode 1)
 
 (setq tool-bar-mode nil)
+(setq scroll-bar-mode nil)
 (setq visible-bell t)
 
 ; == C-x 1 (display only one window)
@@ -142,8 +144,9 @@
         helm-recentf-fuzzy-match t))
 
 (use-package helm-git-grep
-  :init (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
-  :bind (("C-c g" . helm-git-grep)))
+  ;; :init (define-key helm-map (kbd "C-c g") 'helm-git-grep-from-helm)
+  :bind (("C-c g" . helm-git-grep-from-helm))
+)
 (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
 
 (when (executable-find "ack-grep")
@@ -207,6 +210,8 @@
 				     ("~/dotfiles" . 0)
                                      ("~/workspace/bookshelf" . 0)
 				     ("~/.mutt" . 0)))
+(use-package magit-gerrit)
+(setq-default magit-gerrit-ssh-creds "username@gerrit.host.name:29418")
 ; https://emacs.stackexchange.com/questions/19672/magit-gerrit-push-to-other-branch
 ; TODO: replace 'master' with remote branch name ('develop'?)
 (defun magit-push-to-gerrit (&optional remote)
@@ -249,27 +254,27 @@ that uses 'font-lock-warning-face'."
   :init
   (add-hook 'ruby-mode-hook 'rubocop-mode)
   :diminish rubocop-mode)
-(use-package flycheck
-  :no-require t
-  :config
-  (flycheck-define-checker chef-foodcritic
-   "A Chef cookbook syntax checker using Foodcritic.
-   See URL `http://acrmp.github.io/foodcritic/'."
-   :command ("bundle exec foodcritic" source)
-   :error-patterns
-   ((error line-start (message) ": " (file-name) ":" line line-end))
-   :modes (enh-ruby-mode ruby-mode)
-   :predicate
-   (lambda ()
-     (let ((parent-dir) (file-name-directory (buffer-file-name))))
-     (or
-      ;; Chef Cookbook
-      ;; https://docs.opscode.com/chef/knife.html#id38
-      (locate-dominating-file parent-dir "recipes")
-      ;; Knife Solo
-      ;; http://mattschaffer.github.io/knife-solo/#label-Init+Command
-      (locate-dominating-file parent-dir "cookbooks")))
-   :next-checkers ((warnings-only . ruby-rubocop))))
+;; (use-package flycheck
+;;   :no-require t
+;;   :config
+;;   (flycheck-define-checker chef-foodcritic
+;;    "A Chef cookbook syntax checker using Foodcritic.
+;;    See URL `http://acrmp.github.io/foodcritic/'."
+;;    :command ("bundle exec foodcritic" source)
+;;    :error-patterns
+;;    ((error line-start (message) ": " (file-name) ":" line line-end))
+;;    :modes (enh-ruby-mode ruby-mode)
+;;    :predicate
+;;    (lambda ()
+;;      (let ((parent-dir) (file-name-directory (buffer-file-name))))
+;;      (or
+;;       ;; Chef Cookbook
+;;       ;; https://docs.opscode.com/chef/knife.html#id38
+;;       (locate-dominating-file parent-dir "recipes")
+;;       ;; Knife Solo
+;;       ;; http://mattschaffer.github.io/knife-solo/#label-Init+Command
+;;       (locate-dominating-file parent-dir "cookbooks")))
+;;    :next-checkers ((warnings-only . ruby-rubocop))))
 
 ;;;; Groovy
 (use-package groovy-mode
@@ -286,6 +291,11 @@ that uses 'font-lock-warning-face'."
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (use-package ensime)
 ;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+;;;; JSON and jsonlint - https://sdqali.in/blog/2013/07/31/validating-json-in-emacs/
+(use-package flymake-json
+  :init
+  (add-hook 'json-mode-hook 'flymake-json-load))
 
 ;;;; Misc
 ; http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/
@@ -497,3 +507,18 @@ that uses 'font-lock-warning-face'."
 ;; (setq safe-local-variable-values (quote ((graphviz-dot-indent-width . 2))))
 
 ;; Require a final newline in a file, to avoid confusing some tools
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(magit-log-arguments (quote ("--graph" "--decorate" "-n256")))
+ '(package-selected-packages
+   (quote
+    (gerrit-download magit-gerrit magit-gh-pulls yaml-mode wttrin use-package spaceline smartparens pass markdown-mode magit inf-ruby helm-pass helm-mt helm-git-grep groovy-mode flymake-json flycheck ensime bbdb atomic-chrome))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
