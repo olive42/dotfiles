@@ -13,9 +13,12 @@ else
     dir2=~/criteo/chef-repositories/${proj2}
 
     tmux new-session -s criteo1
+    tmux split-window -h -c ~/workspace/snippets
     tmux new-window -c ${dir1} -n ${proj1}
     tmux split-window -h -t ${proj1} -c ${dir1}
     tmux new-window -c ${dir2} -n ${proj2}
     tmux split-window -h -t ${proj2} -c ${dir2}
+    tmux new-window -c ~/criteo/chef-cookbooks/nexus3-criteo -n nexus3
+    tmux split-window -h -c ~/github/criteo-cookbooks/nexus3 -t nexus3
     tmux select-window -t 0
 fi
