@@ -11,6 +11,11 @@ setopt \
     bare_glob_qual \
     numeric_glob_sort
 
+# Autocompletion
+setopt \
+    always_to_end \
+    complete_in_word
+
 # shell history management
 HISTFILE=~/.zsh.d/history
 HISTSIZE=12000
@@ -19,6 +24,7 @@ setopt \
   inc_append_history \
   hist_ignore_dups \
   hist_expire_dups_first \
+  hist_ignore_space \
   hist_reduce_blanks \
   hist_verify
 
@@ -51,40 +57,33 @@ export LC_ALL="en_US.UTF-8"
 # See man gpg-agent(1)
 export GPG_TTY=$(tty)
 
-autoload -U compinit
-compinit
+# autoload -U compinit
+# compinit
+source ~/.zsh.d/completion.zsh
 
 umask 022
 
 # autoload -U promptinit && promptinit
 # prompt pure
-powerline-daemon -q
-. /usr/share/powerline/bindings/zsh/powerline.zsh
+# powerline-daemon -q
+# . /usr/share/powerline/bindings/zsh/powerline.zsh
+
+# Other way to set the prompt?
+# https://zanshin.net/2013/02/02/zsh-configuration-from-the-ground-up/
+source ~/.zsh.d/prompt.zsh
 
 export GEM_HOME=$(ruby -e 'puts Gem.user_dir')
 # TODO: put at the end
-export PATH="$GEM_HOME/bin:/home/o.tharan/bin:/home/o.tharan/.local/bin:/usr/local/go/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="$GEM_HOME/bin:~/bin:~/.local/bin:/usr/local/go/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # This does terrible things to PATH, GEM_HOME, GEM_PATH
 #eval "$(chef shell-init zsh)"
-# https://raw.githubusercontent.com/gma/bundler-exec/master/bundler-exec.sh
-[ -f ~/.bundler-exec.sh ] && source ~/.bundler-exec.sh
-alias be='bundle exec'
 
-# https://unix.stackexchange.com/questions/33255/how-to-define-and-load-your-own-shell-function-in-zsh
-# TODO(olive): just get the list of files in ~/.zfunctions?
-autoload -Uz ilo ipmi pknife tmuxp toMac checkHealth rack
-
-# rdesktop to Windows machines
-alias windows='rdesktop -a 16 -z -P -g 1440x900 -u XXusernameXX -d XXdomainXX -x 0x20 -r clipboard:PRIMARYCLIPBOARD -p $(pass XXpasswordfileXX | head -1)'
-
-alias kitchen-ec2='KITCHEN_YAML=".kitchen.ec2.yml" bundle exec kitchen'
-
-# Not sure why this is here.
 export GIT_SSH=$(which ssh)
-alias gg='git grep'
 
 # Fish-like completion suggestions
 # https://github.com/zsh-users/zsh-autosuggestions
 source ~/.zsh.d/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+source ~/.zsh.d/alias.zsh
 
 # end of .zshrc
