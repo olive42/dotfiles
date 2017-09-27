@@ -11,5 +11,5 @@ alias windows='rdesktop -a 16 -z -P -g 1440x900 -u o.tharan -d PAR -x 0x20 -r cl
 
 alias gg='git grep'
 
-alias startvm=vboxmanage startvm chef-workstation --type headless
-alias stopvm=vboxmanage controlvm chef-workstation poweroff
+alias startvm='vboxmanage startvm chef-workstation --type headless'
+alias stopvm='vboxmanage controlvm chef-workstation poweroff'
