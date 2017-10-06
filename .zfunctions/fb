@@ -1,3 +1,9 @@
 # -*- mode: sh -*-
 
-sshpass -f<(pass XXX | head -1) ssh -l root -o PasswordAuthentication=yes -o StrictHostKeyChecking=no $1
+sshpass -f<(pass XXX | head -1) \
+        ssh \
+        -l root \
+        -o PasswordAuthentication=yes \
+        -o StrictHostKeyChecking=no \
+        -o UserKnownHostsFile=/dev/null \
+        $1
