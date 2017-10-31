@@ -1,0 +1,10 @@
+if [[ $1 == '-a' ]]; then
+   username="/u:Administrator"
+   password="/p:$(pass XXX | head -1)"
+   shift
+else
+   username="/u:XXX"
+   password="/p:$(pass XXX | head -1)"
+fi
+
+xfreerdp /bpp:16 /kbd:US ${username} ${password} /clipboard /cert-ignore /v:${1}
