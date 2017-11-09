@@ -11,5 +11,7 @@
 	# Criteo specific
 	review = push origin HEAD:refs/publish/master
 	reviewd = push origin HEAD:refs/publish/develop
+        # http://caiustheory.com/git-git-git-git-git/
+        git = !exec git
 [grep]
 	lineNumber = true
