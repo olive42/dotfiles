@@ -26,9 +26,9 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-;; (setq package-selected-packages (quote (use-package magit helm helm-mt use-package ensime scala-mode)))
+(setq package-selected-packages (quote (use-package magit helm helm-mt)))
 (setq use-package-always-ensure t)
-(setq use-package-always-pin "melpa-stable")
+;; (setq use-package-always-pin "melpa-stable")
 
 ;; http://milkbox.net/note/single-file-master-emacs-configuration/
 (defun imenu-elisp-sections()
@@ -48,23 +48,26 @@
 (setq desktop-restore-eager 10)
 (run-at-time "10 min" (* 10 60) 'desktop-save-in-desktop-dir)
 
+; https://emacs.stackexchange.com/questions/32881/enabling-minibuffer-pinentry-with-emacs-25-and-gnupg-2-1-on-ubuntu-xenial
+(setq epa-pinentry-mode 'loopback)
+(pinentry-start)
+
 ;;;; General appearance
 ; frame appearance
 (setq initial-frame-alist '(
                             (menu-bar-lines . 0)
                             (tool-bar-lines . 0)
                             (font . "Inconsolata-10")
-                            (height . 77) (width . 108)
+                            ;; (height . 77) (width . 108)
                             ))
 (setq default-frame-alist '(
                             (menu-bar-lines . 0)
                             (tool-bar-lines . 0)
                             (font . "Inconsolata-10")
-                            (height . 77) (width . 108)
+                            ;; (height . 77) (width . 108)
                             (vertical-scroll-bars . nil)
                             (horizontal-scroll-bars . nil)
                                                  ))
-(setq battery-update-interval 300)
 (setq display-time-24hr-format t)
 ; display time in modeline
 (display-time-mode 1)
@@ -149,7 +152,7 @@
 )
 (define-key isearch-mode-map (kbd "C-c g") 'helm-git-grep-from-isearch)
 
-(when (executable-find "ack-grep")
+(when (executable-find "ack-grep") 
   (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
         helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
 
@@ -205,8 +208,11 @@
 (global-set-key [(control x) (v) (b)] 'magit-status)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-magit-file-mode t)
+; From magit-gh-pulls package
+(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 (setq magit-repository-directories '(
 				     ("~/criteo" . 2)
+                                     ("~/github" . 2)
 				     ("~/dotfiles" . 0)
                                      ("~/workspace/bookshelf" . 0)
 				     ("~/.mutt" . 0)))
@@ -226,6 +232,14 @@
   ?M
   "Push to gerrit (develop)"
   '(magit-push-to-gerrit "develop"))
+
+(global-set-key [f5] (lambda()
+                       (interactive)
+                       (let ((current-prefix-arg 4))
+                         (call-interactively #'magit-status))))
+(global-set-key [f9] (lambda()
+                       (interactive)
+                       (call-interactively #'helm-git-grep)))
 
 ; this colours your text over the specified limit in red
 (defun font-lock-width-keyword (width)
@@ -250,10 +264,11 @@ that uses 'font-lock-warning-face'."
   :init
   (add-hook 'ruby-mode-hook 'smartparens-strict-mode)
   :diminish smartparens-mode)
-(use-package rubocop
-  :init
-  (add-hook 'ruby-mode-hook 'rubocop-mode)
-  :diminish rubocop-mode)
+(use-package bundler)
+;; (use-package rubocop
+;;   :init
+;;   (add-hook 'ruby-mode-hook 'rubocop-mode)
+;;   :diminish rubocop-mode)
 ;; (use-package flycheck
 ;;   :no-require t
 ;;   :config
@@ -296,6 +311,7 @@ that uses 'font-lock-warning-face'."
 (use-package flymake-json
   :init
   (add-hook 'json-mode-hook 'flymake-json-load))
+(setq js-indent-level 2)
 
 ;;;; Misc
 ; http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/
@@ -330,15 +346,36 @@ that uses 'font-lock-warning-face'."
 	 ("##computer" "##computer-enthusiasm")
 	 :encryption tls))))
 
-(use-package wttrin)
-(setq wttrin-default-cities (quote ("Paris" "paris" "bourg-la-Reine")))
-;;;
+(use-package elfeed
+  :config
+  (setq elfeed-feeds
+        '(("http://googleonlinesecurity.blogspot.com/atom.xml" google must-read)
+          ("http://googleonlinesecurity.blogspot.com/atom.xml" ex-googlers)
+          ("http://feeds.dashes.com/AnilDash" must-read interesting-people)
+          ("http://jvns.ca/atom.xml" must-read interesting-people programming)
+          ("http://www.savagechickens.com/blog/atom.xml" must-read)
+          ("http://www.rfc1149.net/blog/feed/" copains)
+          ("http://signal.eu.org/blog/feed/" copains)
+          ("http://fantasystockings.com/feed/" girly)
+          ("http://blog.aurynn.com/feed.rss" interesting-people)
+          ("http://technomancy.us/feed/atom.xml" interesting-people)
+          ("http://feedpress.me/CoyoteTracks" interesting-people)
+          ("http://charity.wtf/feed/" interesting-people)
+          ("http://www.schneier.com/blog/index.rdf" security)
+          ("http://blog.cryptographyengineering.com/feeds/posts/default" security)
+          ("http://beyondzerabbit.blogspot.com/feeds/posts/default" comic)
+          ("http://blog.zanorg.com/rss/fil_rss.xml" comic)
+          ("http://gallybox.com/blog/feed/" comic)
+          ("http://www.savagechickens.com/blog/atom.xml" comic)
+          ("http://www.commitstrip.com/fr/feed/" comic)
+          ("http://www.dearfuture.com/feed/" comic)
+          ("http://www.maitre-eolas.fr/feed/atom" france)
+          ("https://blog.acolyer.org/feed/" interesting-people))))
 
 ;;;; variables
 (setq add-log-mailing-address "olivier@tharan.org")
 
 (setq scroll-error-top-bottom t)
-
 
 ; ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -515,7 +552,8 @@ that uses 'font-lock-warning-face'."
  '(magit-log-arguments (quote ("--graph" "--decorate" "-n256")))
  '(package-selected-packages
    (quote
-    (gerrit-download magit-gerrit magit-gh-pulls yaml-mode wttrin use-package spaceline smartparens pass markdown-mode magit inf-ruby helm-pass helm-mt helm-git-grep groovy-mode flymake-json flycheck ensime bbdb atomic-chrome))))
+    (muttrc-mode elfeed-org elfeed bundler gerrit-download magit-gerrit magit-gh-pulls yaml-mode use-package spaceline smartparens pass markdown-mode inf-ruby helm-mt helm-git-grep groovy-mode ensime escreen)))
+ '(safe-local-variable-values (quote ((chef-mode . t)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

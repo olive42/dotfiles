@@ -1,0 +1,38 @@
+* Imported Feeds            :elfeed:
+** google
+*** [[http://googleonlinesecurity.blogspot.com/atom.xml][Google Online Security Blog]]
+** ex-googlers
+*** [[http://www.somebits.com/weblog/index.atom][Nelson's Weblog]]
+** Must Read
+*** [[http://feeds.dashes.com/AnilDash][Anil Dash]]
+*** [[http://jvns.ca/atom.xml][Julia Evans]]
+*** [[http://www.savagechickens.com/blog/atom.xml][Savage Chickens]]
+*** [[http://googleonlinesecurity.blogspot.com/atom.xml][Google Online Security Blog]]
+** copains
+*** [[http://www.rfc1149.net/blog/feed/][An avian carrier's blog (Sam)]]
+*** [[http://signal.eu.org/blog/feed/][Signal]]
+** girly
+*** [[http://fantasystockings.com/feed/][Fantasy Stockings]]
+** interesting-people
+*** [[http://feeds.dashes.com/AnilDash][Anil Dash]]
+*** [[http://jvns.ca/atom.xml][Julia Evans]]
+*** [[http://blog.aurynn.com/feed.rss][The Particular Finest]]
+*** [[http://technomancy.us/feed/atom.xml][Technomancy]]
+*** [[http://tracks.ranea.org/rss][Coyote Tracks]]
+*** [[http://charity.wtf/feed/][charity.wtf]]
+** security
+*** [[http://www.schneier.com/blog/index.rdf][Schneier on Security]]
+*** [[http://blog.cryptographyengineering.com/feeds/posts/default][A Few Thoughts on Cryptographic Engineering]]
+** comic
+*** [[http://margauxmotin.typepad.fr/margaux_motin/atom.xml][Margaux Motin]]
+*** [[http://beyondzerabbit.blogspot.com/feeds/posts/default][Sous le Ginkgo]]
+*** [[http://blog.zanorg.com/rss/fil_rss.xml][.chez kek.]]
+*** [[http://gallybox.com/blog/feed/][Gally blog]]
+*** [[http://www.savagechickens.com/blog/atom.xml][Savage Chickens]]
+*** [[http://www.viruscomix.com/rss.xml][SUBNORMALITY!]]
+*** [[http://www.commitstrip.com/fr/feed/][CommitStrip - Blog relating the daily life of web agencies developers]]
+*** [[http://theoatmeal.com/feed/rss][The Oatmeal - Comics, Quizzes, & Stories]]
+** france
+*** [[http://www.maitre-eolas.fr/feed/atom][Journal d'un avocat]]
+** programming
+*** [[http://jvns.ca/atom.xml][Julia Evans]]
